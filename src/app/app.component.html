@@ -1,0 +1,15 @@
+@if (!hideLayoutRoutes.includes(currentRoute)) {
+  <div class="flex flex-col min-h-screen">
+    <app-header></app-header>
+
+    <div class="flex grow h-[calc(100vh-60px)]">
+      <app-sidebar></app-sidebar>
+
+      <main class="flex-1 flex justify-center overflow-auto bg-[#fdfdfd]">
+        <router-outlet></router-outlet>
+      </main>
+    </div>
+  </div>
+} @else {
+  <router-outlet></router-outlet>
+}

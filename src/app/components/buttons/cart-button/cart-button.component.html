@@ -1,0 +1,7 @@
+<button (click)="goToCart()" class="relative cursor-pointer border-r border-gray-300 pr-8">
+    <app-cart-icon />
+    <span
+        class="absolute top-[-6px] left-[28px] bg-[#008523] text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+        {{ cartItemCount }}
+    </span>
+</button>

@@ -1,0 +1,7 @@
+<div class="flex justify-center gap-4 sm:gap-6 md:gap-8 lg:gap-10">
+  @for (icon of icons; track icon.src) {
+    <div [class]="icon.class">
+      <img [src]="icon.src" [alt]="icon.alt" [class]="icon.imgClass" />
+    </div>
+  }
+</div>

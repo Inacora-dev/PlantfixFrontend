@@ -1,0 +1,90 @@
+<div class="p-30">
+  <div class="flex items-center justify-between mt-5 mb-4 border-b-2 border-gray-300">
+    <h2 class="mb-4">{{ isEditMode ? 'Edit Plant' : 'Create Plant' }}</h2>
+    <div class="flex gap-2 mb-3">
+      <app-cancel-button routerLink="/plants" />
+    </div>
+  </div>
+
+  <form [formGroup]="plantForm" (ngSubmit)="onSubmit()">
+    <div class="m-2">
+      <label for="name">Name</label>
+      <input id="name" formControlName="name" type="text" class="border border-gray-300 rounded p-2 mt-2 w-full"
+        required />
+      @if (backendErrors['name']) {
+      @for (error of backendErrors['name']; track $index) {
+      <div class="text-red-500 text-sm mt-1">{{ error }}</div>
+      }
+      }
+    </div>
+
+    <div class="m-2">
+      <label for="description">Description</label>
+      <textarea id="description" formControlName="description" class="border border-gray-300 rounded p-2 mt-2 w-full"
+        required></textarea>
+      @if (backendErrors['description']) {
+      @for (error of backendErrors['description']; track $index) {
+      <div class="text-red-500 text-sm mt-1">{{ error }}</div>
+      }
+      }
+    </div>
+
+    <div class="m-2">
+      <label for="price">Price</label>
+      <input id="price" formControlName="price" type="text" class="border border-gray-300 rounded p-2 mt-2 w-full"
+        required />
+      @if (backendErrors['price']) {
+      @for (error of backendErrors['price']; track $index) {
+      <div class="text-red-500 text-sm mt-1">{{ error }}</div>
+      }
+      }
+    </div>
+
+    <div class="m-2">
+      <label for="image_url">Image URL</label>
+      <input id="image_url" formControlName="image_url" type="text"
+        class="border border-gray-300 rounded p-2 mt-2 w-full" />
+    </div>
+
+    <div class="m-2">
+      <label for="stock">Stock</label>
+      <input id="stock" formControlName="stock" type="number" class="border border-gray-300 rounded p-2 mt-2 w-full"
+        required />
+      @if (backendErrors['stock']) {
+      @for (error of backendErrors['stock']; track $index) {
+      <div class="text-red-500 text-sm mt-1">{{ error }}</div>
+      }
+      }
+    </div>
+
+    <div class="m-2">
+      <label for="plant_family_id">Family</label>
+      <select id="plant_family_id" formControlName="plant_family_id" class="border border-gray-300 rounded p-2 w-full"
+        required>
+        @for (family of plantFamilies; track family.id) {
+        <option [value]="family.id">{{ family.name }}</option>
+        }
+      </select>
+      @if (backendErrors['plant_family_id']) {
+      @for (error of backendErrors['plant_family_id']; track $index) {
+      <div class="text-red-500 text-sm mt-1">{{ error }}</div>
+      }
+      }
+    </div>
+
+    <div class="mt-4 flex justify-center gap-4">
+      <div>
+        @if (isEditMode) {
+        <app-update-button />
+        } @else {
+        <app-create-button />
+        }
+      </div>
+
+
+      @if (isEditMode) {
+      <app-delete-button (click)="deletePlant()" />
+      }
+    </div>
+  </form>
+</div>

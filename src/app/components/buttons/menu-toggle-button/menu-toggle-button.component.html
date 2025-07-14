@@ -1,0 +1,54 @@
+<div class="relative inline-block text-left">
+    <div>
+        <button type="button" aria-label="menu" (click)="toggleMenu()"
+            class="px-3 py-2 rounded-full bg-slate-800 cursor-pointer hover:bg-slate-600 flex items-center space-x-2 focus:outline-none">
+            <app-profile-icon />
+
+            @if (isMenuOpen) {
+            <app-toggle-down-icon />
+            } @else {
+            <app-toggle-up-icon />
+            }
+        </button>
+    </div>
+
+    @if (isMenuOpen) {
+    <div class="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+        role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
+
+        <div class="p-2 text-sm font-normal" role="none">
+            <div class="flex items-center gap-2 px-2 py-2 text-left text-sm">
+                <div
+                    class="relative flex h-8 w-8 shrink-0 overflow-hidden rounded-lg bg-gray-200 items-center justify-center">
+                    {{ getInitial() }}
+                </div>
+                <div class="grid flex-1 text-left text-sm leading-tight">
+                    <span class="truncate font-semibold">{{ user.name }}</span>
+                    <span class="truncate text-xs text-gray-500">{{ user.email }}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="border-t border-gray-200 my-1"></div>
+
+        <button (click)="onOptionClick()" [routerLink]="['/settings', user.id]"
+            class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1">
+            Settings
+        </button>
+
+        <div class="border-t border-gray-200 my-1"></div>
+
+        <button (click)="onOptionClick()" [routerLink]="['/orders', user.id]"
+            class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1">
+            My Orders
+        </button>
+
+        <div class="border-t border-gray-200 my-1"></div>
+
+        <button (click)="onOptionClick(); logout()"
+            class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1">
+            Logout
+        </button>
+    </div>
+    }
+</div>

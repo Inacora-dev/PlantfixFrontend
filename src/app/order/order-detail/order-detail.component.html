@@ -1,0 +1,100 @@
+<div class="p-30">
+  @if (order && user) {
+  <div class="flex items-center justify-between">
+    <p class="mb-4">Order: {{ order.id }}</p>
+    <div class="flex gap-4 mb-3">
+      <app-cancel-button routerLink="/orders" />
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-20">
+    <div class="flex items-start justify-between sm:border-b lg:border-none pb-6">
+      <div class="flex flex-col w-full">
+        <h2 class="text-2xl font-bold text-green-800 text-center mb-6">Contact Information</h2>
+
+        <div class="space-y-2">
+          <div class="flex gap-2 border-b border-gray-200 pb-4">
+            <p class="font-bold text-md w-32">User Name:</p>
+            <p class="text-md">{{ user.name }}</p>
+          </div>
+          <div class="flex gap-2 border-b border-gray-200 pb-4">
+            <p class="font-bold text-md w-32">User Email:</p>
+            <p class="text-md">{{ user.email }}</p>
+          </div>
+          <div class="flex gap-2 border-b border-gray-200 pb-4">
+            <p class="font-bold text-md w-32">Date:</p>
+            <p class="text-md">{{ order.order_date }}</p>
+          </div>
+          <div class="flex gap-2 border-b border-gray-200 pb-4">
+            <p class="font-bold text-md w-32">Address:</p>
+            <p class="text-md">{{ order.address }}</p>
+          </div>
+          <div class="flex gap-2 border-b border-gray-200 pb-4">
+            <p class="font-bold text-md w-32">City:</p>
+            <p class="text-md">{{ order.city }}</p>
+          </div>
+          <div class="flex gap-2 border-b border-gray-200 pb-4">
+            <p class="font-bold text-md w-32">Country:</p>
+            <p class="text-md">{{ order.country }}</p>
+          </div>
+          <div class="flex gap-2 pb-4">
+            <p class="font-bold text-md w-32">Phone Number:</p>
+            <p class="text-md">{{ order.phone_number }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+    <div>
+      <h2 class="text-2xl font-bold text text-center text-green-800 mb-2 ml-6 pb-4">Order</h2>
+      <table class="w-full text-center border-collapse">
+        <thead>
+          <tr class="border-b">
+            <th class="py-2">Plant Name</th>
+            <th class="py-2">Quantity</th>
+            <th class="py-2">Price per unit</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (plant of order.plants; track plant.id) {
+          <tr class="border-b">
+            <td class="py-2">{{ plant.name }}</td>
+            <td class="py-2">{{ plant.pivot.quantity }}</td>
+            <td class="py-2">{{ plant.pivot.price }}</td>
+          </tr>
+          }
+        </tbody>
+      </table>
+      <div class="flex items-center justify-center mt-4">
+        <p class="font-semibold">Total: ${{ order.total_price}}</p>
+      </div>
+
+      <div class="mt-10 text-center text-sm text-gray-700">
+        <label for="status">Update status:</label>
+        <select [(ngModel)]="order.status" name="status" id="status" class="ml-2 border rounded px-2 py-1">
+          <option value="pending">Pending</option>
+          <option value="processing">Processing</option>
+          <option value="shipped">Shipped</option>
+          <option value="delivered">Delivered</option>
+          <option value="cancelled">Cancelled</option>
+        </select>
+        <app-update-button (click)="updateStatus()" />
+
+        <!-- Danger zone -->
+        <div class="border border-red-200 bg-red-50 p-4 mt-10 rounded-md flex flex-col items-center justify-center">
+          <h3 class="text-lg font-medium text-red-600 mb-2">Danger zone</h3>
+          <p class="text-sm text-red-600 mb-4">
+            Permanently remove this order.
+            This action is not reversible.
+          </p>
+          <app-delete-button (click)="deleteOrder()" />
+        </div>
+      </div>
+    </div>
+  </div>
+  } @else {
+  <div>Loading...</div>
+  }
+</div>
