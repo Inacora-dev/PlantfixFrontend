@@ -11,38 +11,32 @@ export class UserService {
 
   constructor(private http: HttpClient) { }
 
-   getUsers(page: number = 1, perPage: number = 8, query: string = ''): Observable<any> {
-  let params = new HttpParams()
-    .set('page', page.toString())
-    .set('perPage', perPage.toString());
+  getUsers(page: number = 1, perPage: number = 8): Observable<any> {
+    const params = new HttpParams()
+      .set('page', page.toString())
+      .set('perPage', perPage.toString());
 
-  if (query.trim()) {
-    params = params.set('q', query.trim());
+    return this.http.get(this.apiUrl, { params, withCredentials: true });
   }
 
-  return this.http.get(this.apiUrl, { params, withCredentials: true });
-}
-
-
- searchUsers(query: string): Observable<any> {
+  searchUsers(query: string): Observable<any> {
     const params = new HttpParams().set('q', query);
-  return this.http.get(`${this.apiUrl}/search`, { params, withCredentials: true });
+    return this.http.get(`${this.apiUrl}/search`, { params, withCredentials: true });
   }
 
-
-  getUser(id: string) {
+  getUser(id: string): Observable<any> {
     return this.http.get(`${this.apiUrl}/${id}`, { withCredentials: true });
   }
 
-  createUser(user: any) {
+  createUser(user: any): Observable<any> {
     return this.http.post(this.apiUrl, user, { withCredentials: true });
   }
 
-  updateUser(id: string, data: any) {
+  updateUser(id: string, data: any): Observable<any> {
     return this.http.put(`${this.apiUrl}/${id}`, data, { withCredentials: true });
   }
 
-  deleteUser(id: string) {
+  deleteUser(id: string): Observable<any> {
     return this.http.delete(`${this.apiUrl}/${id}`, { withCredentials: true });
   }
 

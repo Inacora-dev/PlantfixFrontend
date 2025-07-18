@@ -1,0 +1,9 @@
+<button
+  type="submit"
+  aria-label="Search"
+  (click)="onSearch()"
+  [disabled]="!query"
+  class="absolute inset-y-0 right-4 flex items-center text-gray-500 hover:text-gray-700"
+>
+  <app-search-icon />
+</button>

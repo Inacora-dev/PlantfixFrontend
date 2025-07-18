@@ -4,11 +4,12 @@ import { CartService } from '../../services/cart/cart.service';
 import { AddToCartButtonComponent } from '../../components/buttons/add-to-cart-button/add-to-cart-button.component';
 import { AddedToCartButtonComponent } from '../../components/buttons/added-to-cart-button/added-to-cart-button.component';
 import { OutOfStockButtonComponent } from '../../components/buttons/out-of-stock-button/out-of-stock-button.component';
+import { ShopFilterComponent } from '../../components/shop-filter/shop-filter.component';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-plant-shop',
-  imports: [AddToCartButtonComponent, AddedToCartButtonComponent, OutOfStockButtonComponent],
+  imports: [AddToCartButtonComponent, AddedToCartButtonComponent, OutOfStockButtonComponent, ShopFilterComponent],
   templateUrl: './plant-shop.component.html',
   styleUrls: []
 })
@@ -21,6 +22,8 @@ export class PlantShopComponent {
   totalItems: number = 0;
   totalPages: number = 0;
   showSuccessMessage = false;
+  sortBy: string = '';
+  selectedFamily: string = '';
 
   constructor(private plantService: PlantService, private cartService: CartService, private route: ActivatedRoute) { }
 
@@ -50,13 +53,37 @@ export class PlantShopComponent {
     return this.addedPlants.has(plant.id);
   }
 
-  loadPlants(): void {
-    this.plantService.getPlants(this.currentPage, this.itemsPerPage).subscribe(response => {
+    onSortChange(sort: string) {
+    this.sortBy = sort;
+    this.currentPage = 1;
+    this.loadPlants();
+  }
+
+onFamilyChange(family: string) {
+  this.selectedFamily = family;
+  this.currentPage = 1;
+  this.loadPlants();
+}
+
+loadPlants(): void {
+  const filters = {
+    page: this.currentPage,
+    perPage: this.itemsPerPage,
+    sortBy: this.sortBy,
+    family: this.selectedFamily
+  };
+
+  console.log('Loading plants with filters:', filters);
+
+  this.plantService
+    .getPlantsFiltered(filters)
+    .subscribe(response => {
+      console.log('Response from filtered plants:', response);
       this.plants = response.data;
       this.totalItems = response.total;
       this.totalPages = Math.ceil(this.totalItems / this.itemsPerPage);
     });
-  }
+}
 
   onPageChange(page: number): void {
     if (page < 1 || page > this.totalPages) return;

@@ -41,4 +41,16 @@ export class PlantService {
     const params = new HttpParams().set('q', query);
     return this.http.get(`${this.apiUrl}/search`, { params, withCredentials: true });
   }
+
+  getPlantsFiltered(filters: { sortBy?: string; family?: string; page?: number; perPage?: number }): Observable<any> {
+  let params = new HttpParams();
+
+  if (filters.page) params = params.set('page', filters.page.toString());
+  if (filters.perPage) params = params.set('perPage', filters.perPage.toString());
+  if (filters.sortBy) params = params.set('sortBy', filters.sortBy);
+  if (filters.family) params = params.set('family', filters.family);
+
+  return this.http.get(this.apiUrl, { params, withCredentials: true });
+}
+
 }

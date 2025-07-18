@@ -1,0 +1,4 @@
+<div class="relative w-46 max-w-sm flex items-center space-x-2">
+    <app-search-input [query]="query" (queryChange)="emitQueryChange($event)" (enterPressed)="emitSearch()" />
+    <app-search-button [query]="query" (search)="emitSearch()" />
+</div>

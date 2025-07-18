@@ -6,44 +6,10 @@
     </div>
     <div class="flex flex-col gap-2 shrink-0 sm:flex-row">
       <div class="mx-3">
-     <div class="relative w-46 max-w-sm">
-  <input
-    id="search"
-    name="search"
-    type="search"
-    placeholder="Search..."
-    value=""
-    [(ngModel)]="query_order"
-    class="w-full h-9 border border-gray-300 rounded-md py-2 pl-4 pr-10 focus:outline-none focus:ring-2 focus:ring-[#69b85d]"
-  />
-  <button
-    type="submit"
-    aria-label="Search"
-     (click)="onSearch()"
-                [disabled]="!query_order"
-    class="absolute inset-y-0 right-2 flex items-center text-gray-500 hover:text-gray-700"
-  >
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke-width="2"
-      stroke="currentColor"
-      class="w-5 h-5 cursor-pointer"
-    >
-      <path
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
-      />
-    </svg>
-  </button>
-</div>
-
+        <app-search [query]="query" (queryChange)="onQueryChange($event)" (search)="onSearch()" />
       </div>
     </div>
   </div>
-
 
   <div class="p-0">
     <table class="w-full mt-4 text-left table-auto">
@@ -78,9 +44,11 @@
       </thead>
       <tbody>
         @if(orders.length === 0){
-        <p class="p-4 text-center text-slate-500">
-          No orders found
-        </p>
+        <td class="p-4 border-b border-slate-200" colspan="100%">
+          <div class="flex flex-col items-center">
+            No orders found
+          </div>
+        </td>
         }@else{
         @for (order of orders; track order.id) {
         <tr>
@@ -110,7 +78,6 @@
 
           <td class="p-4 border-b border-slate-200 text-center">
             <div class="flex justify-center items-center">
-              <!-- Botón Ver/editar status -->
               <app-edit-button routerLink="/orders/show/{{ order.id }}" />
             </div>
           </td>
@@ -120,23 +87,17 @@
     </table>
   </div>
 
-<div class="flex justify-center items-center mt-4 space-x-2">
-  <button
-    (click)="onPageChange(currentPage - 1)"
-    [disabled]="currentPage === 1"
-    class="px-4 py-2 bg-gray-300 text-gray-700 rounded disabled:opacity-50"
-  >
-    Previous
-  </button>
+  <div class="flex justify-center items-center mt-4 space-x-2">
+    <button (click)="onPageChange(currentPage - 1)" [disabled]="currentPage === 1"
+      class="px-4 py-2 bg-gray-300 text-gray-700 rounded disabled:opacity-50">
+      Previous
+    </button>
 
-  <span class="text-sm">Page {{ currentPage }} of {{ totalPages }}</span>
+    <span class="text-sm">Page {{ currentPage }} of {{ totalPages }}</span>
 
-  <button
-    (click)="onPageChange(currentPage + 1)"
-    [disabled]="currentPage === totalPages || totalPages === 0"
-    class="px-4 py-2 bg-gray-300 text-gray-700 rounded disabled:opacity-50"
-  >
-    Next
-  </button>
-</div>
+    <button (click)="onPageChange(currentPage + 1)" [disabled]="currentPage === totalPages || totalPages === 0"
+      class="px-4 py-2 bg-gray-300 text-gray-700 rounded disabled:opacity-50">
+      Next
+    </button>
+  </div>
 </div>

@@ -8,12 +8,9 @@
     <div class="flex justify-between items-center mb-4">
       <p class="text-sm">Showing {{ plants.length }} results</p>
 
-      <button class="border px-4 py-2 rounded flex items-center gap-2">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h8m-8 6h16"></path>
-        </svg>
-        Filter
-      </button>
+      <app-shop-filter (familyChange)="onFamilyChange($event)" (sortChange)="onSortChange($event)">
+      </app-shop-filter>
+
     </div>
 
     <div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:w-300 md:w-150 sm:w-80">

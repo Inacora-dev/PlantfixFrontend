@@ -3,29 +3,29 @@ import { OrderService } from '../services/order/order.service';
 import { RouterModule } from '@angular/router';
 import { EditButtonComponent } from '../components/buttons/edit-button/edit-button.component';
 import { FormsModule } from '@angular/forms';
+import { SearchComponent } from '../search/search.component';
 
 @Component({
   selector: 'app-order',
-  imports: [RouterModule, EditButtonComponent, FormsModule],
+  imports: [RouterModule, EditButtonComponent, FormsModule, SearchComponent],
   templateUrl: './order.component.html',
   styleUrls: []
 })
 export class OrderComponent {
-constructor(private orderService: OrderService){}
+  constructor(private orderService: OrderService) { }
 
-orders: any[] = [];
- currentPage: number = 1;
+  orders: any[] = [];
+  currentPage: number = 1;
   itemsPerPage: number = 8;
   totalItems: number = 0;
   totalPages: number = 0;
-    query_order: string = '';
+  query: string = '';
+
   ngOnInit() {
-  this.orderService.getOrders().subscribe(data => {
-    this.loadOrders()
-  });
-
+    this.orderService.getOrders().subscribe(data => {
+      this.loadOrders()
+    });
   }
-
 
   loadOrders(): void {
     this.orderService.getOrders(this.currentPage, this.itemsPerPage).subscribe(response => {
@@ -41,14 +41,16 @@ orders: any[] = [];
     this.loadOrders();
   }
 
-   onSearch(): void {
-    console.log("Buscando:", this.query_order);
-    if (this.query_order.trim()) {
-      this.orderService.searchOrders(this.query_order).subscribe(results => {
-          this.orders = results.data;
+  onQueryChange(newQuery: string) {
+    this.query = newQuery;
+  }
+
+  onSearch() {
+    this.currentPage = 1;
+    this.orderService.searchOrders(this.query).subscribe(results => {
+      this.orders = results.data;
       this.totalItems = results.total;
       this.totalPages = Math.ceil(this.totalItems / this.itemsPerPage);
-      });
-    }
+    });
   }
 }

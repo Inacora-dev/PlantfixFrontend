@@ -1,30 +1,48 @@
 import { Component } from '@angular/core';
 import { PlantService } from '../services/plants/plant.service';
-import { RouterModule } from '@angular/router';
 import { AddButtonComponent } from '../components/buttons/add-button/add-button.component';
 import { ShowButtonComponent } from "../components/buttons/show-button/show-button.component";
 import { EditButtonComponent } from '../components/buttons/edit-button/edit-button.component';
 import { FormsModule } from '@angular/forms';
+import { SearchComponent } from '../search/search.component';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-plant',
-  imports: [RouterModule, AddButtonComponent, ShowButtonComponent, EditButtonComponent,FormsModule],
+  imports: [RouterModule, AddButtonComponent, ShowButtonComponent, EditButtonComponent, FormsModule, SearchComponent],
   templateUrl: './plant.component.html',
   styleUrls: []
 })
 export class PlantComponent {
 
-  constructor(private plantService: PlantService) {}
+  constructor(private plantService: PlantService, private route: ActivatedRoute) { }
 
   plants: any[] = [];
   currentPage: number = 1;
   itemsPerPage: number = 8;
   totalItems: number = 0;
   totalPages: number = 0;
+  query: string = '';
+  plantFamilies: any[] = [];
 
-    query: string = '';
-   ngOnInit(): void {
-    this.loadPlants();
+  ngOnInit() {
+    this.plantService.getPlants().subscribe(response => {
+      this.plants = response.data;
+
+      const familyMap = new Map();
+
+      this.plantFamilies = this.plants
+        .map(p => p.plant_family)
+        .filter(family => {
+          if (!familyMap.has(family.id)) {
+            familyMap.set(family.id, true);
+            return true;
+          }
+          return false;
+        });
+
+      this.loadPlants();
+    });
   }
 
   loadPlants(): void {
@@ -33,6 +51,7 @@ export class PlantComponent {
       this.totalItems = response.total;
       this.totalPages = Math.ceil(this.totalItems / this.itemsPerPage);
     });
+
   }
 
   onPageChange(page: number): void {
@@ -41,18 +60,16 @@ export class PlantComponent {
     this.loadPlants();
   }
 
-
-
-   onSearch(): void {
-    console.log("Buscando:", this.query);
-    if (this.query.trim()) {
-      this.plantService.searchPlants(this.query).subscribe(results => {
-        console.log("Resultados de búsque"+ results);
-          this.plants = results.data;
-      this.totalItems = results.total;
-      this.totalPages = Math.ceil(this.totalItems / this.itemsPerPage);
-      });
-    }
+  onQueryChange(newQuery: string) {
+    this.query = newQuery;
   }
 
+  onSearch() {
+    this.currentPage = 1;
+    this.plantService.searchPlants(this.query).subscribe(results => {
+      this.plants = results.data;
+      this.totalItems = results.total;
+      this.totalPages = Math.ceil(this.totalItems / this.itemsPerPage);
+    });
+  }
 }

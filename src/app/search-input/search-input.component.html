@@ -1,0 +1,9 @@
+<input
+  id="search"
+  name="search"
+  type="search"
+  placeholder="Search..."
+  [value]="query"
+  (input)="onInput($event)"
+  (keydown.enter)="onEnter()"
+  class="w-full h-9 border border-gray-300 rounded-md py-2 pl-4 pr-10 focus:outline-none focus:ring-2 focus:ring-[#69b85d]" />

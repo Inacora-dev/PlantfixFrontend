@@ -4,31 +4,31 @@ import { RouterModule } from '@angular/router';
 import { AddButtonComponent } from '../../components/buttons/add-button/add-button.component';
 import { EditButtonComponent } from '../../components/buttons/edit-button/edit-button.component';
 import { FormsModule } from '@angular/forms';
+import { SearchComponent } from "../../search/search.component";
 
 @Component({
   selector: 'app-user',
-  imports: [RouterModule, AddButtonComponent, FormsModule, EditButtonComponent],
+  imports: [RouterModule, AddButtonComponent, FormsModule, EditButtonComponent, SearchComponent],
   templateUrl: './user.component.html',
   styleUrls: []
 })
 export class UserComponent {
 
-  constructor(private userService: UserService) {}
+  constructor(private userService: UserService) { }
 
   users: any[] = [];
   currentPage: number = 1;
   itemsPerPage: number = 8;
   totalItems: number = 0;
   totalPages: number = 0;
-query_user: string = ''; 
+  query: string = '';
 
-   ngOnInit(): void {
+  ngOnInit(): void {
     this.loadUsers();
   }
 
   loadUsers(): void {
-    // Supongo que tu servicio se adaptó para recibir paginación y query (puedes ajustarlo)
-    this.userService.getUsers(this.currentPage, this.itemsPerPage, this.query_user).subscribe(response => {
+    this.userService.getUsers(this.currentPage, this.itemsPerPage).subscribe(response => {
       this.users = response.data;
       this.totalItems = response.total;
       this.totalPages = Math.ceil(this.totalItems / this.itemsPerPage);
@@ -41,16 +41,20 @@ query_user: string = '';
     this.loadUsers();
   }
 
+  onQueryChange(newQuery: string) {
+    this.query = newQuery;
+  }
 
+  onSearch() {
+    this.currentPage = 1;
 
-   onSearch(): void {
-    console.log("Buscando:", this.query_user);
-    if (this.query_user.trim()) {
-      this.userService.searchUsers(this.query_user).subscribe(results => {
-          this.users = results.data;
+    this.userService.searchUsers(this.query).subscribe(results => {
+      this.users = results.data;
       this.totalItems = results.total;
       this.totalPages = Math.ceil(this.totalItems / this.itemsPerPage);
-      });
-    }
+    });
   }
 }
+
+
+
