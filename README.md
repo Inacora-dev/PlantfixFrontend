@@ -24,7 +24,6 @@ Antes de empezar, asegúrate de tener instalado:
 1. Instala las dependencias del proyecto:
 
 ```
-bash
 npm install
 ```
 
@@ -41,6 +40,8 @@ Para levantar la aplicación en modo desarrollo y probarla localmente:
 ng serve
 
 La aplicación estará disponible en http://localhost:4200.
+
+El Backend se encuentra en https://github.com/Inacora-dev/PlantfixBackend
 
 ##### Colaboradores del proyecto
 - Inacora Teresa Campos Alonso
