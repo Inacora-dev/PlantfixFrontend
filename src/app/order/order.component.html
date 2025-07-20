@@ -1,0 +1,103 @@
+<div class="w-full mt-[14vh] mb-[2vh] py-2 text-slate-700 bg-white dark:bg-zinc-700 shadow-lg rounded-xl ">
+  <div class="flex items-center justify-between px-4 gap-80">
+    <div>
+      <h1 class="text-lg font-semibold text-slate-800 dark:text-white">Order List</h1>
+      <p class="text-slate-500">Check the info before updating/deleting</p>
+    </div>
+    <div class="flex flex-col gap-2 shrink-0 sm:flex-row">
+      <div class="mx-3">
+        <app-search [query]="query" (queryChange)="onQueryChange($event)" (search)="onSearch()" />
+      </div>
+    </div>
+  </div>
+
+  <div class="p-0">
+    <table class="w-full mt-4 text-left table-auto">
+      <thead>
+        <tr>
+          <th
+            class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50 hover:bg-slate-100 dark:bg-zinc-300 dark:border-zinc-200 dark:hover:bg-zinc-200">
+            <p class="flex items-center justify-center gap-2 text-sm font-normal leading-none text-slate-500">
+              User ID
+            </p>
+          </th>
+
+          <th
+            class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50 hover:bg-slate-100 dark:bg-zinc-300 dark:border-zinc-200 dark:hover:bg-zinc-200">
+            <p class="flex items-center justify-center gap-2 text-sm font-normal leading-none text-slate-500">
+              Order Date
+            </p>
+          </th>
+
+          <th
+            class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50 hover:bg-slate-100 dark:bg-zinc-300 dark:border-zinc-200 dark:hover:bg-zinc-200">
+            <p class="flex items-center justify-center gap-2 text-sm font-normal leading-none text-slate-500">
+              Status
+            </p>
+          </th>
+          <th
+            class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50 hover:bg-slate-100 dark:bg-zinc-300 dark:border-zinc-200 dark:hover:bg-zinc-200">
+            <p class="flex items-center justify-center text-sm font-normal leading-none text-slate-500">
+              Actions</p>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        @if(orders.length === 0){
+        <td class="p-4 border-b border-slate-200" colspan="100%">
+          <div class="flex flex-col items-center">
+            No orders found
+          </div>
+        </td>
+        }@else{
+        @for (order of orders; track order.id) {
+        <tr>
+          <td class="p-4 border-b border-slate-200">
+            <div class="flex flex-col items-center">
+              <p class="text-sm font-semibold text-slate-700 dark:text-white">
+                {{ order.user_id }}
+              </p>
+            </div>
+          </td>
+
+          <td class="p-4 border-b border-slate-200">
+            <div class="flex flex-col items-center">
+              <p class="text-sm text-slate-500 dark:text-white">
+                {{ order.order_date }}
+              </p>
+            </div>
+          </td>
+
+          <td class="p-4 border-b border-slate-200">
+            <div class="flex flex-col items-center">
+              <p class="text-sm text-slate-500 dark:text-white">
+                {{ order.status }}
+              </p>
+            </div>
+          </td>
+
+          <td class="p-4 border-b border-slate-200 text-center">
+            <div class="flex justify-center items-center">
+              <app-edit-button routerLink="/orders/show/{{ order.id }}" />
+            </div>
+          </td>
+        </tr>
+        } }
+      </tbody>
+    </table>
+  </div>
+
+  <div class="flex justify-center items-center mt-4 space-x-2">
+    <button (click)="onPageChange(currentPage - 1)" [disabled]="currentPage === 1"
+      class="px-4 py-2 bg-gray-300 text-gray-700 rounded disabled:opacity-50">
+      Previous
+    </button>
+
+    <span class="text-sm">Page {{ currentPage }} of {{ totalPages }}</span>
+
+    <button (click)="onPageChange(currentPage + 1)" [disabled]="currentPage === totalPages || totalPages === 0"
+      class="px-4 py-2 bg-gray-300 text-gray-700 rounded disabled:opacity-50">
+      Next
+    </button>
+  </div>
+</div>

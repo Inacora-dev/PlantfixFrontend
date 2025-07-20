@@ -1,0 +1,106 @@
+<aside class="flex flex-col bg-[#f7f9f2] border-r border-gray-200 border-opacity-5 text-gray-700 shadow h-screen"
+  [ngClass]="isOpen() ? 'w-64' : 'w-20'">
+  <div class="flex items-start mt-[8vh]">
+    <ul class="flex-1">
+      <li routerLinkActive="bg-[#E6F4EA]" [routerLinkActiveOptions]="{ exact: true }"
+        class="hover:bg-[#C8E6C9] text-gray-600">
+        <a routerLink="/home" class="h-16 px-4 flex items-center w-full"
+          [ngClass]="isOpen() ? 'justify-start space-x-4 pl-4' : 'justify-center'"
+          [attr.title]="!isOpen() ? 'Home' : null">
+          <app-home-icon  class="text-[#69b85d]" />
+          @if (isOpen()) {
+            <span class="text-sm font-medium">Home</span>
+          }
+        </a>
+      </li>
+
+      <li routerLinkActive="bg-[#E6F4EA]" [routerLinkActiveOptions]="{ exact: true }"
+        class="hover:bg-[#C8E6C9] text-gray-600">
+        <a routerLink="/plants/shop" class="h-16 px-4 flex items-center w-full"
+          [ngClass]="isOpen() ? 'justify-start space-x-4 pl-4' : 'justify-center'"
+          [attr.title]="!isOpen() ? 'Shop' : null">
+          <app-shop-icon />
+          @if (isOpen()) {
+            <span class="text-sm font-medium">Shop</span>
+          }
+        </a>
+      </li>
+
+      <li routerLinkActive="bg-[#E6F4EA]" [routerLinkActiveOptions]="{ exact: true }"
+        class="hover:bg-[#C8E6C9] text-gray-600">
+        <a routerLink="/planttips" class="h-16 px-4 flex items-center w-full"
+          [ngClass]="isOpen() ? 'justify-start space-x-4 pl-4' : 'justify-center'"
+          [attr.title]="!isOpen() ? 'Plant tips' : null">
+          <app-tips-icon />
+          @if (isOpen()) {
+            <span class="text-sm font-medium">Plant tips</span>
+          }
+        </a>
+      </li>
+
+      @if (user?.role === 'admin') {
+
+        @if (isOpen()) {
+          <p class="h-16 flex items-center w-full border-t border-gray-500 pl-4 text-gray-500">Admin</p>
+        }
+
+        <li routerLinkActive="bg-[#E6F4EA]" [routerLinkActiveOptions]="{ exact: true }"
+          class="hover:bg-[#C8E6C9] text-gray-600">
+          <a routerLink="/plants" class="h-16 px-4 flex items-center w-full"
+            [ngClass]="isOpen() ? 'justify-start space-x-4 pl-4' : 'justify-center'"
+            [attr.title]="!isOpen() ? 'Plants' : null">
+            <app-plants-icon />
+            @if (isOpen()) {
+              <span class="text-sm font-medium">Plants</span>
+            }
+          </a>
+        </li>
+
+        <li routerLinkActive="bg-[#E6F4EA]" [routerLinkActiveOptions]="{ exact: true }"
+          class="hover:bg-[#C8E6C9] text-gray-600">
+          <a routerLink="/orders" class="h-16 px-4 flex items-center w-full"
+            [ngClass]="isOpen() ? 'justify-start space-x-4 pl-4' : 'justify-center'"
+            [attr.title]="!isOpen() ? 'Orders' : null">
+            <app-orders-icon />
+            @if (isOpen()) {
+              <span class="text-sm font-medium">Orders</span>
+            }
+          </a>
+        </li>
+
+        <li routerLinkActive="bg-[#E6F4EA]" [routerLinkActiveOptions]="{ exact: true }"
+          class="hover:bg-[#C8E6C9] text-gray-600">
+          <a routerLink="/users" class="h-16 px-4 flex items-center w-full"
+            [ngClass]="isOpen() ? 'justify-start space-x-4 pl-4' : 'justify-center'"
+            [attr.title]="!isOpen() ? 'Users' : null">
+            <app-users-icon />
+            @if (isOpen()) {
+              <span class="text-sm font-medium">Users</span>
+            }
+          </a>
+        </li>
+      }
+    </ul>
+  </div>
+
+  <div class="fixed bottom-0">
+    <div class="h-16 flex items-center w-full border-t border-gray-500">
+      <button (click)="toggleSidebar()"
+        class="h-16 w-full flex justify-center items-center hover:bg-[#C8E6C9] focus:outline-none cursor-pointer"
+        aria-label="Toggle sidebar">
+
+        @if (isOpen()) {
+          <p class="flex items-center text-center text-gray-500 justify-center m-auto gap-2 w-64">
+            <app-close-sidebar-icon />
+            Collapsed view
+          </p>
+        }
+        @if (!isOpen()) {
+          <p class="flex items-center text-center text-gray-500 justify-center m-auto gap-2 w-20">
+            <app-open-sidebar-icon />
+          </p>
+        }
+      </button>
+    </div>
+  </div>
+</aside>

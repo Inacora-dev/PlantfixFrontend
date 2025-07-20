@@ -1,0 +1,81 @@
+<div class="p-30">
+  <h2 class="text-2xl font-semibold mb-6">Order resume</h2>
+
+  @if (cartItems.length === 0) {
+  <div class="text-gray-500">
+    <p class="mb-4">Your cart is empty</p>
+    <app-shop-now-button routerLink="/plants/shop" />
+  </div>
+  } @else {
+
+  <div class="space-y-6">
+    @for (item of cartItems; track item.id) {
+    <div class="flex items-start justify-between border-b pb-6">
+      <div class="flex items-start gap-4">
+        <img [src]="item.image_url" alt="'Image: ' + {{ item.name }}" class="w-24 h-24 object-cover rounded-md" />
+        <div class="w-[16vw]">
+          <h3 class="text-md font-medium text-gray-900 mb-1">{{ item.name }}</h3>
+          <p class="text-sm text-gray-500 mb-1">$ {{ item.price }}</p>
+          <h3 class="text-sm text-gray-500 mb-1">Quantity: {{ item.quantity }}</h3>
+          <div class="flex justify-end">
+            <p class="text-sm text-gray-500 font-semibold">Total: ${{ item.quantity*item.price }}</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    }
+    <div class="flex items-center justify-around font-bold text-2xl">
+      <p>Total:</p>
+      <p>${{getTotal()}}</p>
+    </div>
+    <h2 class="text-2xl font-semibold mb-4">Contact Information</h2>
+    <form [formGroup]="orderForm" (ngSubmit)="placeOrder()">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <label for="address" class="block text-sm font-medium text-gray-700">Address</label>
+          <input id="address" type="text" formControlName="address" class="mt-1 w-full border rounded-md p-2"
+            required />
+          @if (backendErrors['address']) {
+          @for (error of backendErrors['address']; track $index) {
+          <div class="text-red-500 text-sm mt-1">{{ error }}</div>
+          }
+          }
+        </div>
+        <div>
+          <label for="city" class="block text-sm font-medium text-gray-700">City</label>
+          <input id="city" type="text" formControlName="city" class="mt-1 w-full border rounded-md p-2" required />
+          @if (backendErrors['city']) {
+          @for (error of backendErrors['city']; track $index) {
+          <div class="text-red-500 text-sm mt-1">{{ error }}</div>
+          }
+          }
+        </div>
+        <div>
+          <label for="country" class="block text-sm font-medium text-gray-700">Country</label>
+          <input id="country" type="text" formControlName="country" class="mt-1 w-full border rounded-md p-2"
+            required />
+          @if (backendErrors['country']) {
+          @for (error of backendErrors['country']; track $index) {
+          <div class="text-red-500 text-sm mt-1">{{ error }}</div>
+          }
+          }
+        </div>
+        <div>
+          <label for="phone_number" class="block text-sm font-medium text-gray-700">Phone Number</label>
+          <input id="phone_number" type="tel" formControlName="phone_number" class="mt-1 w-full border rounded-md p-2"
+            required />
+          @if (backendErrors['phone_number']) {
+          @for (error of backendErrors['phone_number']; track $index) {
+          <div class="text-red-500 text-sm mt-1">{{ error }}</div>
+          }
+          }
+        </div>
+      </div>
+
+      <div class="flex justify-center mt-4">
+        <app-place-order-button />
+      </div>
+    </form>
+  </div>
+  }
